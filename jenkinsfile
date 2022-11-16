@@ -12,25 +12,15 @@ git 'https://github.com/scribblersajeesh/test.git'
 }
 }
 stage('Building our image') {
-steps{
-script {
-dockerImage = docker.build registry + ":$BUILD_NUMBER"
-}
-}
+    steps {
+        sh 'docker build -t ubi9:testnov16 --no-cache .'
+    }
 }
 stage('Deploy our image') {
-steps{
-script {
-docker.withRegistry( '', registryCredential ) {
-dockerImage.push()
+    steps {
+        sh "docker image push sajeesh83/test:123456"
+    }
 }
 }
 }
-}
-stage('Cleaning up') {
-steps{
-sh "docker rmi $registry:$BUILD_NUMBER"
-}
-}
-}
-}
+
